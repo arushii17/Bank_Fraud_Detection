@@ -1,0 +1,43 @@
+-- Load the preprocessed bank fraud data from HDFS
+fraud_data = LOAD '/user/maria_dev/input/preprocessed_fraud_data.csv' 
+USING PigStorage(',')
+AS (
+    transaction_id: chararray,
+    amount: double,
+    transaction_type: chararray,
+    customer_id: chararray,
+    merchant_id: chararray,
+    location: chararray,
+    time: chararray,
+    is_fraud: int
+);
+
+-- Check the schema (optional for debugging)
+DESCRIBE fraud_data;
+
+-- See some sample records (optional for checking)
+-- DUMP fraud_data;
+
+-- Filter only fraudulent transactions (is_fraud = 1)
+fraudulent_transactions = FILTER fraud_data BY is_fraud == 1;
+
+-- Get the total number of transactions
+total_transactions = FOREACH (GROUP fraud_data ALL) GENERATE COUNT(fraud_data) AS total_txns;
+
+-- Get the total number of fraudulent transactions
+total_fraudulent = FOREACH (GROUP fraudulent_transactions ALL) GENERATE COUNT(fraudulent_transactions) AS fraud_txns;
+
+-- Calculate total amount lost due to fraud
+fraud_amount = FOREACH (GROUP fraudulent_transactions ALL) GENERATE SUM(fraudulent_transactions.amount) AS total_fraud_amount;
+
+-- Find top 10 highest fraud transaction amounts
+ordered_fraud = ORDER fraudulent_transactions BY amount DESC;
+top10_fraud = LIMIT ordered_fraud 10;
+
+-- Store all outputs to HDFS
+STORE fraudulent_transactions INTO '/user/maria_dev/output/fraudulent_transactions' USING PigStorage(',');
+STORE total_transactions INTO '/user/maria_dev/output/total_transactions' USING PigStorage(',');
+STORE total_fraudulent INTO '/user/maria_devr/output/total_fraudulent' USING PigStorage(',');
+STORE fraud_amount INTO '/user/maria_dev/output/fraud_amount' USING PigStorage(',');
+STORE top10_fraud INTO '/user/maria_dev/output/top10_fraud' USING PigStorage(',');
+
