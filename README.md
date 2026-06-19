@@ -1,4 +1,4 @@
-<img width="654" height="367" alt="image" src="https://github.com/user-attachments/assets/91f01acd-d12b-49c1-ba1a-3363add6cfaf" /># Bank Transaction Fraud Detection using Big Data
+# Bank Transaction Fraud Detection using Big Data
 
 A Big Data project that detects fraudulent bank transactions using Apache Pig for large-scale data processing, PySpark for machine learning, and Tableau for interactive visualization.
 
@@ -129,6 +129,8 @@ python src/bank.py
 
 ---
 ## Tableau Screenshots
+
+<img width="654" height="367" alt="image" src="https://github.com/user-attachments/assets/91f01acd-d12b-49c1-ba1a-3363add6cfaf" />
 
 <img width="597" height="342" alt="image" src="https://github.com/user-attachments/assets/060deb7f-2e02-4638-982f-284cb8ded67c" />
 
