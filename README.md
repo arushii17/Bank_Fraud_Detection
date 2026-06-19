@@ -143,8 +143,4 @@ python src/bank.py
 
 Arushi
 
-Yashi
 
-Muskan
-
-NorthCap University
